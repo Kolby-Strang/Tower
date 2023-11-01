@@ -37,4 +37,8 @@ footer {
 body{
   background-color: #2e303c;
 }
+
+.text-highlight{
+  color: #56C7FB;
+}
 </style>
