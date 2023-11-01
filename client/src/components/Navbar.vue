@@ -1,9 +1,7 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
-    <router-link class="navbar-brand d-flex" :to="{ name: 'Home' }">
-      <div class="d-flex flex-column align-items-center">
-        <img alt="logo" src="../assets/img/cw-logo.png" height="45" />
-      </div>
+  <nav class="navbar navbar-expand-lg bg-blur px-3">
+    <router-link class="text-light d-flex" :to="{ name: 'Home' }">
+      <h1>Tower</h1>
     </router-link>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
       aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
@@ -52,5 +50,9 @@ a:hover {
   nav {
     height: 64px;
   }
+}
+
+.bg-blur{
+  backdrop-filter: blur(10px);
 }
 </style>
