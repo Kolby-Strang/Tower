@@ -3,6 +3,14 @@ import { BadRequest, Forbidden } from "../utils/Errors.js"
 
 class TicketsService {
     async createTicket(ticketData) {
+        const towerEvent = await (await dbContext.TowerEvent.findById(ticketData.eventId)).populate('ticketCount')
+        if (towerEvent.isCanceled) {
+            throw new BadRequest(`Event: ${towerEvent.name} is canceled!`)
+        }
+        // @ts-ignore
+        if (towerEvent.ticketCount >= towerEvent.capacity) {
+            throw new BadRequest(`Event: ${towerEvent.name} is at max capacity!`)
+        }
         const ticket = await dbContext.Ticket.create(ticketData)
         await ticket.populate('profile')
         return ticket

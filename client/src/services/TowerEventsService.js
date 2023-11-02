@@ -9,6 +9,20 @@ class TowerEventsService{
         logger.log(res.data)
         AppState.events = res.data.map(eventPOJO => new TowerEvent(eventPOJO))
     }
+    async getActiveTowerEvent(eventId){
+        const res = await api.get(`api/events/${eventId}`)
+        AppState.activeTowerEvent = new TowerEvent(res.data)
+    }
+    clearData(){
+        AppState.activeTowerEvent = null
+        AppState.activeComments = []
+        AppState.activeTickets = []
+    }
+    async deleteActiveEvent(){
+        const eventId = AppState.activeTowerEvent.id
+        const res = await api.delete(`api/events/${eventId}`)
+        AppState.activeTowerEvent = new TowerEvent(res.data)
+    }
 }
 
 

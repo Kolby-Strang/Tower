@@ -41,4 +41,7 @@ body{
 .text-highlight{
   color: #56C7FB;
 }
+.my-bg-secondary{
+  background-color: #474C61;
+}
 </style>
