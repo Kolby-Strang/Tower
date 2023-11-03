@@ -38,7 +38,7 @@ export default {
     setup() {
         // VARIABLES
         const account = computed(() => AppState.account);
-        const towerEvents = computed(() => AppState.events.filter(towerEvent => towerEvent.creatorId == account.value.id && !towerEvent.isCanceled));
+        const towerEvents = computed(() => AppState.events.filter(towerEvent => towerEvent.creatorId == account.value.id));
         const tickets = computed(()=> AppState.myTickets)
         // FUNCTIONS
         async function getEvents(){
