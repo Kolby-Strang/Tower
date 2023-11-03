@@ -233,7 +233,8 @@ export default {
     background-color: #29cbf43b;
     width: 100%;
     height: 100%;
-    padding: .5em;
+    padding-top: .7em;
+    padding-bottom: .7em;
 }
 .text-shadow> *p{
     filter: drop-shadow(1px 1px 5px rgba(0, 0, 0, 0.818));
