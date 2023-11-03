@@ -49,8 +49,12 @@ export default {
                 Pop.error(error);
             }
         }
+        function clearData(){
+          towerEventsService.clearData
+        }
         // LIFECYCLE
         onMounted(() => {
+            clearData()
             getTowerEvents();
         });
         return {

@@ -1,4 +1,6 @@
+import { applyStyles } from "@popperjs/core"
 import { AppState } from "../AppState"
+import { Ticket } from "../models/Ticket"
 import { logger } from "../utils/Logger"
 import { api } from "./AxiosService"
 
@@ -13,6 +15,14 @@ class TicketsService{
         const res = await api.post('api/tickets', {eventId})
         AppState.activeTickets.push(res.data)
         AppState.activeTowerEvent.ticketCount++
+    }
+    async getMyTickets(){
+        const res = await api.get('account/tickets')
+        AppState.myTickets = res.data.map(ticket => new Ticket(ticket))
+    }
+    async deleteTicket(ticketId){
+        const res = await api.delete(`api/tickets/${ticketId}`)
+        AppState.myTickets = AppState.myTickets.filter(ticket => ticket.id != ticketId)
     }
 
 }

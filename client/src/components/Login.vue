@@ -6,7 +6,7 @@
     </button>
     <div v-else>
       <div class="dropdown my-2 my-lg-0">
-        <div type="button" class="login-icon selectable no-select" data-bs-toggle="dropdown" aria-expanded="false">
+        <div type="button" class="selectable no-select" data-bs-toggle="dropdown" aria-expanded="false">
           <div v-if="account.picture || user.picture">
             <img :src="account.picture || user.picture" alt="account photo" height="40" class="rounded" />
           </div>
@@ -18,6 +18,9 @@
                 Manage Account
               </div>
             </router-link>
+            <button class="list-group-item dropdown-item" data-bs-toggle="modal" data-bs-target="#newTowerEventModal">
+              Create Event
+            </button>
             <div class="list-group-item dropdown-item list-group-item-action text-danger selectable" @click="logout">
               <i class="mdi mdi-logout"></i>
               logout
@@ -51,8 +54,5 @@ export default {
 
 <style lang="scss" scoped>
 
-.login-icon{
-  border: solid 1 white;
-}
 
 </style>

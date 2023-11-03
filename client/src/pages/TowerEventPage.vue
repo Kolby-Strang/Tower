@@ -1,27 +1,31 @@
 <template>
     <div v-if="towerEvent" class="container">
-        <div class="row">
+        <div class="row pt-2">
             <div class="rounded card-container col-12 p-0" :style="`background-image: url('${towerEvent.coverImg}');`">
                 <div class="info-overlay container-fluid rounded">
                     <div class="row">
 
-                        <div v-if="towerEvent.creatorId == account.id && !towerEvent.isCanceled" class="col-12 d-flex justify-content-end">
-                            <div>
-                                <button class="btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="mdi mdi-menu fs-2"></i>
-                                </button>
-                                <ul class="dropdown-menu">
-                                    <button class="dropdown-item btn">Edit Event</button>
-                                    <button @click="destroyEvent()" class="dropdown-item btn text-danger">Cancel Event</button>
-                                </ul>
-                            </div>
-                        </div>
-
+                        
                         <div class="col-12 col-lg-6 col-xxl-5">
                             <img class="foreground-cover-img" :src="towerEvent.coverImg" alt="">
                         </div>
                         <div class="info col-12 col-lg-6 col-xxl-7 d-flex flex-column justify-content-between text-light text-shadow">
                             <div>
+                                <div v-if="towerEvent.creatorId == account.id && !towerEvent.isCanceled" class="d-flex justify-content-end">
+                                    <div>
+                                        <button class="btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="mdi mdi-menu fs-2"></i>
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            <button class="dropdown-item btn" data-bs-toggle="modal" :data-bs-target="`#edit${towerEvent.id}Modal`">
+                                                Edit Event
+                                            </button>
+                                            <button @click="destroyEvent()" class="dropdown-item btn text-danger">
+                                                Cancel Event
+                                            </button>
+                                        </ul>
+                                    </div>
+                                </div>
                                 <div class="d-flex justify-content-between">
                                     <p class="fs-4 fw-bold">{{ towerEvent.name }}</p>
                                     <p class="fs-5">{{ towerEvent.startDate.toLocaleDateString() }}</p>
@@ -31,13 +35,16 @@
                                     <p class="fs-5">Starts at {{ towerEvent.startDate.toLocaleTimeString() }}</p>
                                 </div>
                                 <div>
-                                    <p class="">{{ towerEvent.description }}</p>
+                                    <p>{{ towerEvent.description }}</p>
                                 </div>
                             </div>
                             <div class="d-flex justify-content-between">
                                 <div v-if="towerEvent.capacity - towerEvent.ticketCount > 0 && !towerEvent.isCanceled" class="d-flex justify-content-between align-items-center p-1 w-100">
                                     <p class="m-0"><span class="text-highlight">{{ towerEvent.capacity - towerEvent.ticketCount}}</span> Spots Left</p>
-                                    <button v-if="account.id" @click="createTicket()" class="btn btn-warning">Grab A Ticket!</button>
+                                    <div class="d-flex flex-column align-items-center">
+                                        <button v-if="account.id" @click="createTicket()" class="btn btn-warning">Grab A Ticket!</button>
+                                        <p v-if="eventTickets.find(ticket => ticket.accountId == towerEvent.creatorId)" class="text-success m-0">You are attending this event!</p>
+                                    </div>
                                 </div>
                                 <div v-else-if="towerEvent.isCanceled" class="bg-danger p-1 text-center w-100">
                                     <p class="m-0">Cancelled</p>
@@ -54,7 +61,7 @@
                 <p class="text-secondary">See who's attending</p>
                 <div v-if="eventTickets.length > 0" class="row my-bg-secondary rounded py-2">
                     <div v-for="ticket in eventTickets" :key="ticket.id" class="col">
-                        <img class="small-profile-picture" :src="ticket.profile.picture" alt="">
+                        <img class="small-profile-picture" :src="ticket.profile.picture" :alt="ticket.profile.name" :title="ticket.profile.name">
                     </div>
                 </div>
                 <div v-else class="row my-bg-secondary rounded py-2">
@@ -96,6 +103,7 @@
         </div>
     </div>
     <div v-else class="d-flex justify-content-center"><LoadingComponent /></div>
+    <EditTowerEventModal v-if="towerEvent" :towerEvent="towerEvent" />
 </template>
 
 
@@ -108,6 +116,7 @@ import { towerEventsService } from '../services/TowerEventsService';
 import { commentsService } from '../services/CommentsService';
 import { ticketsService } from '../services/TicketsService';
 import LoadingComponent from '../components/LoadingComponent.vue';
+import EditTowerEventModal from '../components/EditTowerEventModal.vue';
 export default {
     setup() {
         // VARIABLES
@@ -188,7 +197,7 @@ export default {
             destroyEvent
         };
     },
-    components: { LoadingComponent }
+    components: { LoadingComponent, EditTowerEventModal }
 };
 </script>
 
@@ -207,7 +216,8 @@ export default {
     width: 100%;
 }
 .info-overlay{
-    background-color: #0093b76c;
+    backdrop-filter: blur(10px);
+    background-color: #29cbf43b;
     width: 100%;
     height: 100%;
     padding: .5em;

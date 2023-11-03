@@ -1,16 +1,18 @@
 <template>
-  <header>
+  <header class="sticky-top">
     <Navbar />
   </header>
   <main>
     <router-view />
   </main>
+  <NewTowerEventModal />
 </template>
 
 <script>
 import { computed } from 'vue'
 import { AppState } from './AppState'
 import Navbar from './components/Navbar.vue'
+import NewTowerEventModal from './components/NewTowerEventModal.vue'
 
 export default {
   setup() {
@@ -18,7 +20,7 @@ export default {
       appState: computed(() => AppState)
     }
   },
-  components: { Navbar }
+  components: { Navbar, NewTowerEventModal }
 }
 </script>
 <style lang="scss">
@@ -36,6 +38,9 @@ footer {
 }
 body{
   background-color: #2e303c;
+}
+header{
+  border-bottom: solid rgba(255, 255, 255, 0.421) 1px;
 }
 
 .text-highlight{
