@@ -99,4 +99,9 @@ export default {
 
 <style lang="scss" scoped>
 
+.img-preview{
+    height: 58px;
+    max-width: 100%;
+}
+
 </style>
