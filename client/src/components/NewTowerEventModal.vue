@@ -45,8 +45,8 @@
                                 <label for="startDate">Event Start Time</label>
                             </div>
                             <div class="form-floating">
-                                <select required class="form-select" id="floatingSelectGrid">
-                                    <option value="concert">Concert</option>
+                                <select v-model="editable.type" required class="form-select" id="floatingSelectGrid">
+                                    <option selected value="concert">Concert</option>
                                     <option value="convention">Convention</option>
                                     <option value="sport">Sport</option>
                                     <option value="digital">Digital</option>
@@ -74,13 +74,16 @@ import { computed, reactive, onMounted, ref } from 'vue';
 import Pop from '../utils/Pop';
 import { towerEventsService } from '../services/TowerEventsService';
 import { useRouter } from 'vue-router';
+import { Modal } from "bootstrap";
 export default {
     setup(){
         const editable = ref({})
+        const router = useRouter()
         async function createEvent(){
             try {
                 const towerEvent = await towerEventsService.createEvent(editable.value)
-                useRouter().push(`event/${towerEvent.id}`)
+                Modal.getOrCreateInstance('#newTowerEventModal').hide()
+                router.push({name:'TowerEvent', params:{eventId:towerEvent.id}, shallow: false})
             } catch (error) {
                 Pop.error(error)
             }

@@ -1,5 +1,4 @@
 import { AppState } from "../AppState"
-import { logger } from "../utils/Logger"
 import { api } from "./AxiosService"
 
 class CommentsService{
@@ -12,6 +11,10 @@ class CommentsService{
         commentData.eventId = eventId
         const res = await api.post('api/comments', commentData)
         AppState.activeComments.push(res.data)
+    }
+    async deleteComment(commentId){
+        await api.delete(`api/comments/${commentId}`)
+        AppState.activeComments = AppState.activeComments.filter(comment => comment.id != commentId)
     }
 }
 

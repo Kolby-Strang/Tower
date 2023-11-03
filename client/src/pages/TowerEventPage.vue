@@ -91,7 +91,10 @@
                                     <img class="comment-profile-picture shadow" :src="comment.creator.picture" alt="">
                                 </div>
                                 <div class="col-10 bg-light rounded shadow">
-                                    <p class="fs-5 fw-bold mb-0">{{ comment.creator.name }} <span v-if="eventTickets.find(ticket => ticket.accountId == comment.creator.id)" class="fs-6 text-primary">Attending This Event</span></p>
+                                    <div class="d-flex justify-content-between pt-2">
+                                        <p class="fs-5 fw-bold mb-0">{{ comment.creator.name }} <span v-if="eventTickets.find(ticket => ticket.accountId == comment.creator.id)" class="fs-6 text-primary">Attending This Event</span></p>
+                                        <button @click="deleteComment(comment.id)" v-if="comment.creator.id == account.id" class="btn btn-outline-danger"><i class="mdi mdi-delete"></i></button>
+                                    </div>
                                     <p>{{ comment.body }}</p>
                                 </div>
                             </div>
@@ -176,6 +179,15 @@ export default {
                 Pop.error(error)
             }
         }
+        async function deleteComment(commentId){
+            try {
+                const confirmDelete = await Pop.confirm('Are you sure you want to delete this comment?')
+                if(confirmDelete)
+                await commentsService.deleteComment(commentId)
+            } catch (error) {
+                Pop.error(error)
+            }
+        }
         function clearData(){
             towerEventsService.clearData()
         }
@@ -194,7 +206,8 @@ export default {
             createTicket,
             createComment,
             editable,
-            destroyEvent
+            destroyEvent,
+            deleteComment
         };
     },
     components: { LoadingComponent, EditTowerEventModal }

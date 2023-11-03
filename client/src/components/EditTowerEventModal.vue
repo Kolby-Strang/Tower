@@ -46,7 +46,7 @@
                                 <label for="startDate">Event Start Time</label>
                             </div>
                             <div class="form-floating">
-                                <select class="form-select" id="floatingSelectGrid">
+                                <select v-model="editable.type" class="form-select" id="floatingSelectGrid">
                                     <!-- TODO get selected to work with editable -->
                                     <option value="concert">Concert</option>
                                     <option value="convention">Convention</option>
